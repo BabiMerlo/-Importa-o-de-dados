@@ -17,12 +17,6 @@ export class Endereco {
         return this._cep;
     }
 
-    public set cep(novoCep: number) {
-        if(novoCep != this._cep) {
-            this._cep = novoCep;
-        }
-    }
-
     public get logradouro(): string {
         return this._logradouro
     }
