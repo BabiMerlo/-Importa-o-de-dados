@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "tsc: transpilar",
+      "type": "shell",
+      "command": "npx tsc",
+      "problemMatcher": ["$tsc"],
+      "group": "build"
+    }
+  ]
+}
