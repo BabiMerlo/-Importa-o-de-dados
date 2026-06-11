@@ -30,6 +30,8 @@ async function consultarCEP(cep: string): Promise<any> {
 
 async function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
 
+    setTimeout(() => {
+
     return new Promise(async (resolve, reject) => {
 
         try {
@@ -72,7 +74,7 @@ async function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
             reject(erro);
         }
     });
-}
+}, 21000)}
 
 async function main(): Promise<void> {
 
@@ -103,29 +105,6 @@ async function main(): Promise<void> {
         }
     }
 
-    console.log("\n=== TESTES DE ERROS ===\n");
-
-    try {
-        await consultarCNPJ("ABC123");
-    } catch (erro: any) {
-        console.log("Erro CNPJ com letras:");
-        console.log(erro.message);
-    }
-
-    try {
-        const dados = await consultarCNPJ("12345678900123");
-        console.log(dados);
-    } catch (erro: any) {
-        console.log("Erro CNPJ inexistente:");
-        console.log(erro.message);
-    }
-
-    try {
-        await consultarCEP("ABCDE");
-    } catch (erro: any) {
-        console.log("Erro CEP inválido:");
-        console.log(erro.message);
-    }
 
     console.log("\n=== LISTA DE EMPRESAS ===\n");
 
@@ -134,11 +113,3 @@ async function main(): Promise<void> {
         console.log("\n-----------------------------------\n");
     });
 }
-
-main()
-    .then(() => {
-        console.log("Programa finalizado com sucesso!");
-    })
-    .catch((erro) => {
-        console.log("Erro geral:", erro);
-    });
