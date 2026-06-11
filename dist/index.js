@@ -1,4 +1,19 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Endereco_1 = require("./Endereco");
+const PessoaJuridica_1 = require("./PessoaJuridica");
+const RepositorioPessoaJuridica_1 = require("./RepositorioPessoaJuridica");
+const repositorio = new RepositorioPessoaJuridica_1.RepositorioPessoaJuridica();
+async function consultarCNPJ(cnpj) {
+    const url = `https://receitaws.com.br/v1/cnpj/${cnpj}`;
+    const response = await fetch(url);
+    if (response.ok) {
+        return response.json();
+    }
+    else {
+        throw new Error(`Erro HTTP ${response.status}`);
+    }
+}
 async function consultarCEP(cep) {
     const url = `https://viacep.com.br/ws/${cep}/json/`;
     const response = await fetch(url);
@@ -6,22 +21,81 @@ async function consultarCEP(cep) {
         return response.json();
     }
     else {
-        throw new SyntaxError(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Erro HTTP ${response.status}`);
     }
 }
-async function displayDadosCep(cep) {
+async function criarEmpresa(cnpj) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const dadosEmpresa = await consultarCNPJ(cnpj);
+            if (dadosEmpresa.status === "ERROR") {
+                reject(new Error(`Erro ReceitaWS: ${dadosEmpresa.message}`));
+                return;
+            }
+            const cep = dadosEmpresa.cep.replace(/\D/g, "");
+            const dadosCep = await consultarCEP(cep);
+            if ("erro" in dadosCep) {
+                reject(new Error("CEP não encontrado."));
+                return;
+            }
+            const endereco = new Endereco_1.Endereco(Number(cep), dadosCep.logradouro, dadosCep.bairro, dadosCep.uf, Number(dadosCep.ddd));
+            const empresa = new PessoaJuridica_1.PessoaJuridica(Number(cnpj), dadosEmpresa.nome, dadosEmpresa.email || "Não informado", dadosEmpresa.telefone || "Não informado", endereco);
+            resolve(empresa);
+        }
+        catch (erro) {
+            reject(erro);
+        }
+    });
+}
+async function main() {
+    const cnpjs = [
+        "10838653001501"
+    ];
+    console.log("=== CONSULTANDO EMPRESAS ===\n");
+    for (const cnpj of cnpjs) {
+        try {
+            const empresa = await criarEmpresa(cnpj);
+            repositorio.adicionar(empresa);
+            console.log(`Empresa adicionada: ${empresa.RazaoSocial}`);
+        }
+        catch (erro) {
+            console.log(`Erro ao consultar CNPJ ${cnpj}: ${erro.message}`);
+        }
+    }
+    console.log("\n=== TESTES DE ERROS ===\n");
     try {
-        const dados = await consultarCEP(cep);
-        if ("erro" in dados) {
-            console.log("CEP não encontrado!");
-        }
-        else {
-            console.log(`Logradouro: ${dados.logradouro}\nCidade: ${dados.localidade}\nEstado: ${dados.estado}`);
-        }
+        await consultarCNPJ("ABC123");
     }
-    catch (error) {
-        console.log(`Erro na API ViaCep\n${error.name}: ${error.message}`);
+    catch (erro) {
+        console.log("Erro CNPJ com letras:");
+        console.log(erro.message);
     }
+    try {
+        const dados = await consultarCNPJ("12345678900123");
+        console.log(dados);
+    }
+    catch (erro) {
+        console.log("Erro CNPJ inexistente:");
+        console.log(erro.message);
+    }
+    try {
+        await consultarCEP("ABCDE");
+    }
+    catch (erro) {
+        console.log("Erro CEP inválido:");
+        console.log(erro.message);
+    }
+    console.log("\n=== LISTA DE EMPRESAS ===\n");
+    repositorio.listar().forEach((empresa) => {
+        console.log(empresa.toString());
+        console.log("\n-----------------------------------\n");
+    });
 }
-console.log(consultarCEP("29650000"));
+main()
+    .then(() => {
+    console.log("Programa finalizado com sucesso!");
+})
+    .catch((erro) => {
+    console.log("Erro geral:", erro);
+});
 //# sourceMappingURL=index.js.map
