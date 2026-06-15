@@ -2,76 +2,71 @@ import { Endereco } from "./Endereco";
 
 export class PessoaJuridica  {
 
-    private cnpj: number;
-    private razaoSocial: string;
-    private email: string;
-    private telefone: string;
-    private endereco: Endereco;
+    private _cnpj: string;
+    private _razaoSocial: string;
+    private _email: string;
+    private _telefone: string;
+    private _endereco: Endereco;
 
-    constructor(cnpj: number, razaoSocial: string, email: string, telefone: string, endereco: Endereco) {
-        this.cnpj = cnpj;
-        this.razaoSocial = razaoSocial;
-        this.email = email;
-        this.telefone = telefone;
-        this.endereco = endereco; ''
+    constructor(cnpj: string, razaoSocial: string, email: string, telefone: string, endereco: Endereco) {
+        this._cnpj = cnpj;
+        this._razaoSocial = razaoSocial;
+        this._email = email;
+        this._telefone = telefone;
+        this._endereco = endereco;
     }
 
 
-    public get Cnpj(): number {
-        return this.cnpj;
-    }
-    public set Cnpj(novocnpj: number) {
-        if (novocnpj > 0) {
-            this.cnpj = novocnpj;
-        }
+    public get cnpj(): string {
+        return this._cnpj;
     }
 
-    public get RazaoSocial(): string {
-        return this.razaoSocial;
+    public get razaoSocial(): string {
+        return this._razaoSocial;
     }
 
-    public set RazaoSocial(novarazaoSocial: string) {
+    public set razaoSocial(novarazaoSocial: string) {
         if (novarazaoSocial != "") {
-            this.razaoSocial = novarazaoSocial;
+            this._razaoSocial = novarazaoSocial;
         }
     }
 
-    public get Email(): string {
-        return this.email;
+    public get email(): string {
+        return this._email;
     }
-    public set Email(novoemail: string) {
-        if (novoemail != "") {
-            this.email = novoemail;
+    public set email(novoEmail: string) {
+        if (novoEmail != "") {
+            this._email = novoEmail;
         }
     }
 
-    public get Telefone(): string {
-        return this.telefone;
+    public get telefone(): string {
+        return this._telefone;
     }
 
-    public set Telefone(novotelefone: string) {
-        if (novotelefone != "") {
-            this.telefone = novotelefone;
+    public set telefone(novoTelefone: string) {
+        if (novoTelefone != "") {
+            this._telefone = novoTelefone;
         }
     }
 
-    public get Endereco(): Endereco {
-        return this.endereco;
+    public get endereco(): Endereco {
+        return this._endereco;
     }
 
-    public set Endereco(endereco: Endereco) {
+    public set endereco(endereco: Endereco) {
         if (endereco) {
-            this.endereco = endereco;
+            this._endereco = endereco;
         }
     }
 
     toString(): string {
         return (
-            "CNPJ = " + this.cnpj +
-            "\nRazão Social = " + this.razaoSocial +
-            "\nEmail = " + this.email +
-            "\nTelefone = " + this.telefone +
-            "\nEndereço = " + this.endereco.toString()
+            "CNPJ = " + this._cnpj +
+            "\nRazão Social = " + this._razaoSocial +
+            "\nEmail = " + this._email +
+            "\nTelefone = " + this._telefone +
+            "\nEndereço = " + this._endereco.toString()
         );
     }
 }

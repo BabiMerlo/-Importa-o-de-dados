@@ -2,65 +2,59 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PessoaJuridica = void 0;
 class PessoaJuridica {
-    cnpj;
-    razaoSocial;
-    email;
-    telefone;
-    endereco;
+    _cnpj;
+    _razaoSocial;
+    _email;
+    _telefone;
+    _endereco;
     constructor(cnpj, razaoSocial, email, telefone, endereco) {
-        this.cnpj = cnpj;
-        this.razaoSocial = razaoSocial;
-        this.email = email;
-        this.telefone = telefone;
-        this.endereco = endereco;
-        '';
+        this._cnpj = cnpj;
+        this._razaoSocial = razaoSocial;
+        this._email = email;
+        this._telefone = telefone;
+        this._endereco = endereco;
     }
-    get Cnpj() {
-        return this.cnpj;
+    get cnpj() {
+        return this._cnpj;
     }
-    set Cnpj(novocnpj) {
-        if (novocnpj > 0) {
-            this.cnpj = novocnpj;
-        }
+    get razaoSocial() {
+        return this._razaoSocial;
     }
-    get RazaoSocial() {
-        return this.razaoSocial;
-    }
-    set RazaoSocial(novarazaoSocial) {
+    set razaoSocial(novarazaoSocial) {
         if (novarazaoSocial != "") {
-            this.razaoSocial = novarazaoSocial;
+            this._razaoSocial = novarazaoSocial;
         }
     }
-    get Email() {
-        return this.email;
+    get email() {
+        return this._email;
     }
-    set Email(novoemail) {
-        if (novoemail != "") {
-            this.email = novoemail;
+    set email(novoEmail) {
+        if (novoEmail != "") {
+            this._email = novoEmail;
         }
     }
-    get Telefone() {
-        return this.telefone;
+    get telefone() {
+        return this._telefone;
     }
-    set Telefone(novotelefone) {
-        if (novotelefone != "") {
-            this.telefone = novotelefone;
+    set telefone(novoTelefone) {
+        if (novoTelefone != "") {
+            this._telefone = novoTelefone;
         }
     }
-    get Endereco() {
-        return this.endereco;
+    get endereco() {
+        return this._endereco;
     }
-    set Endereco(endereco) {
+    set endereco(endereco) {
         if (endereco) {
-            this.endereco = endereco;
+            this._endereco = endereco;
         }
     }
     toString() {
-        return ("CNPJ = " + this.cnpj +
-            "\nRazão Social = " + this.razaoSocial +
-            "\nEmail = " + this.email +
-            "\nTelefone = " + this.telefone +
-            "\nEndereço = " + this.endereco.toString());
+        return ("CNPJ = " + this._cnpj +
+            "\nRazão Social = " + this._razaoSocial +
+            "\nEmail = " + this._email +
+            "\nTelefone = " + this._telefone +
+            "\nEndereço = " + this._endereco.toString());
     }
 }
 exports.PessoaJuridica = PessoaJuridica;

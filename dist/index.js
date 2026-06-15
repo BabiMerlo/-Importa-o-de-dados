@@ -21,27 +21,31 @@ function criarEmpresa(cnpj) {
                     return;
                 }
                 const endereco = new Endereco_1.Endereco(Number(cep), dadosCep.logradouro, dadosCep.bairro, dadosCep.uf, Number(dadosCep.ddd));
-                const empresa = new PessoaJuridica_1.PessoaJuridica(Number(cnpj), dadosEmpresa.nome, dadosEmpresa.email || "Não informado", dadosEmpresa.telefone || "Não informado", endereco);
+                const empresa = new PessoaJuridica_1.PessoaJuridica(cnpj, dadosEmpresa.nome, dadosEmpresa.email || "Não informado", dadosEmpresa.telefone || "Não informado", endereco);
                 resolve(empresa);
             }
             catch (erro) {
                 reject(erro);
             }
-        }, 21000);
+        }, 21 * 1000);
     });
 }
 async function main() {
     const cnpjs = [
-        "61186888000193",
+        "33000167000101",
         "00000000000191",
-        "00000000782718"
+        "00360305000104",
+        "34028316000103",
+        "33683111000107",
+        "42422253000101",
+        "33657248000189"
     ];
     console.log("=== CONSULTANDO EMPRESAS ===\n");
     for (const cnpj of cnpjs) {
         try {
             const empresa = await criarEmpresa(cnpj);
             repositorio.adicionar(empresa);
-            console.log(`Empresa adicionada: ${empresa.RazaoSocial}`);
+            console.log(`Empresa adicionada: ${empresa.razaoSocial}`);
         }
         catch (erro) {
             console.log(`Erro ao consultar CNPJ ${cnpj}: ${erro.message}`);
@@ -53,7 +57,5 @@ async function main() {
         console.log("\n-----------------------------------\n");
     });
 }
-main().catch((erro) => {
-    console.error("Erro inesperado:", erro);
-});
+main();
 //# sourceMappingURL=index.js.map

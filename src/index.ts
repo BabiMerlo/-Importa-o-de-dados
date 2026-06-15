@@ -38,7 +38,7 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
                 );
 
                 const empresa = new PessoaJuridica(
-                    Number(cnpj),
+                    cnpj,
                     dadosEmpresa.nome,
                     dadosEmpresa.email || "Não informado",
                     dadosEmpresa.telefone || "Não informado",
@@ -51,7 +51,7 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
                 reject(erro);
             }
 
-        }, 21000);
+        }, 21 * 1000);
 
     });
 }
@@ -60,9 +60,13 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
 async function main(): Promise<void> {
 
     const cnpjs = [
-    "61186888000193",
+    "33000167000101",
     "00000000000191",
-    "00000000782718"
+    "00360305000104",
+    "34028316000103",
+    "33683111000107",
+    "42422253000101",
+    "33657248000189"
 ];
 
     console.log("=== CONSULTANDO EMPRESAS ===\n");
@@ -76,7 +80,7 @@ async function main(): Promise<void> {
             repositorio.adicionar(empresa);
 
             console.log(
-                `Empresa adicionada: ${empresa.RazaoSocial}`
+                `Empresa adicionada: ${empresa.razaoSocial}`
             );
 
         } catch (erro: any) {
@@ -96,6 +100,4 @@ async function main(): Promise<void> {
         console.log("\n-----------------------------------\n");
     });
 }
-main().catch((erro) => {
-    console.error("Erro inesperado:", erro);
-});
+main()
