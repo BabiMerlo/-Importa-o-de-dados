@@ -10,18 +10,10 @@ function criarEmpresa(cnpj) {
         setTimeout(async () => {
             try {
                 const dadosEmpresa = await insumoAPI_1.insumoAPI.consultaCNPJ(cnpj);
-                if (dadosEmpresa.status === "ERROR") {
-                    reject(new Error(`Erro ReceitaWS: ${dadosEmpresa.message}`));
-                    return;
-                }
                 const cep = dadosEmpresa.cep.replace(/\D/g, "");
                 const dadosCep = await insumoAPI_1.insumoAPI.consultarCEP(cep);
-                if ("erro" in dadosCep) {
-                    reject(new Error("CEP não encontrado."));
-                    return;
-                }
                 const endereco = new Endereco_1.Endereco(Number(cep), dadosCep.logradouro, dadosCep.bairro, dadosCep.uf, Number(dadosCep.ddd));
-                const empresa = new PessoaJuridica_1.PessoaJuridica(cnpj, dadosEmpresa.nome, dadosEmpresa.email || "Não informado", dadosEmpresa.telefone || "Não informado", endereco);
+                const empresa = new PessoaJuridica_1.PessoaJuridica(cnpj, dadosEmpresa.nome, dadosEmpresa.email, dadosEmpresa.telefone, endereco);
                 resolve(empresa);
             }
             catch (erro) {

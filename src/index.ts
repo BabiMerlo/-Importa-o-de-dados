@@ -10,24 +10,10 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
     return new Promise((resolve, reject) => {
 
         setTimeout(async () => {
-
             try {
-
                 const dadosEmpresa = await insumoAPI.consultaCNPJ(cnpj);
-
-                if (dadosEmpresa.status === "ERROR") {
-                    reject(new Error(`Erro ReceitaWS: ${dadosEmpresa.message}`));
-                    return;
-                }
-
                 const cep = dadosEmpresa.cep.replace(/\D/g, "");
-
                 const dadosCep: any = await insumoAPI.consultarCEP(cep);
-
-                if ("erro" in dadosCep) {
-                    reject(new Error("CEP não encontrado."));
-                    return;
-                }
 
                 const endereco = new Endereco(
                     Number(cep),
@@ -40,8 +26,8 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
                 const empresa = new PessoaJuridica(
                     cnpj,
                     dadosEmpresa.nome,
-                    dadosEmpresa.email || "Não informado",
-                    dadosEmpresa.telefone || "Não informado",
+                    dadosEmpresa.email,
+                    dadosEmpresa.telefone,
                     endereco
                 );
 
@@ -50,7 +36,6 @@ function criarEmpresa(cnpj: string): Promise<PessoaJuridica> {
             } catch (erro) {
                 reject(erro);
             }
-
         }, 21000);
 
     });
@@ -67,9 +52,6 @@ async function main(): Promise<void> {
     "45997418002954",
     "10838653000289",
     "28053619000183"
-
-
-
 ];
 
     console.log("=== CONSULTANDO EMPRESAS ===\n");
@@ -77,9 +59,7 @@ async function main(): Promise<void> {
     for (const cnpj of cnpjs) {
 
         try {
-
             const empresa = await criarEmpresa(cnpj);
-
             repositorio.adicionar(empresa);
 
             console.log(
@@ -87,7 +67,6 @@ async function main(): Promise<void> {
             );
 
         } catch (erro: any) {
-
             console.log(
                 `Erro ao consultar CNPJ ${cnpj}: ${erro.message}`
             );
