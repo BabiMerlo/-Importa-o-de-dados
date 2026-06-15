@@ -18,6 +18,11 @@ class insumoAPI {
         if (response.ok) {
             return response.json();
         }
+        if (response.status === 429) {
+            console.log("Limite atingido. Aguardando 60 segundos para tentar novamente...");
+            await new Promise(resolve => setTimeout(resolve, 60 * 1000));
+            return this.consultaCNPJ(cnpj);
+        }
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
 }

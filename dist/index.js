@@ -27,7 +27,7 @@ function criarEmpresa(cnpj) {
             catch (erro) {
                 reject(erro);
             }
-        }, 21 * 1000);
+        }, 21000);
     });
 }
 async function main() {
@@ -35,10 +35,10 @@ async function main() {
         "33000167000101",
         "00000000000191",
         "00360305000104",
-        "34028316000103",
-        "33683111000107",
-        "42422253000101",
-        "33657248000189"
+        "10838653001501",
+        "45997418002954",
+        "10838653000289",
+        "28053619000183"
     ];
     console.log("=== CONSULTANDO EMPRESAS ===\n");
     for (const cnpj of cnpjs) {
